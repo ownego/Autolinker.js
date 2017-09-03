@@ -3268,7 +3268,7 @@ Autolinker.matcher.Hashtag = Autolinker.Util.extend( Autolinker.matcher.Matcher,
 	 * @private
 	 * @property {RegExp} matcherRegex
 	 */
-	matcherRegex : new RegExp( '#[_' + Autolinker.RegexLib.alphaNumericCharsStr + ']{1,139}', 'g' ),
+	matcherRegex : new RegExp( '#[-_' + Autolinker.RegexLib.alphaNumericCharsStr + ']{1,139}', 'g' ),
 
 	/**
 	 * The regular expression to use to check the character before a username match to
@@ -3330,6 +3330,7 @@ Autolinker.matcher.Hashtag = Autolinker.Util.extend( Autolinker.matcher.Matcher,
 	}
 
 } );
+
 /*global Autolinker */
 /**
  * @class Autolinker.matcher.Phone
@@ -3373,7 +3374,7 @@ Autolinker.matcher.Phone = Autolinker.Util.extend( Autolinker.matcher.Matcher, {
 			var matchedText = match[0],
 				cleanNumber = matchedText.replace(/[^0-9,;#]/g, ''), // strip out non-digit characters exclude comma semicolon and #
 				plusSign = !!match[1]; // match[ 1 ] is the prefixed plus sign, if there is one
-			if (/\D/.test(match[2]) && /\D/.test(matchedText)) {
+			if (this.testMatch(match[2]) && this.testMatch(matchedText)) {
     			matches.push(new Autolinker.match.Phone({
     				tagBuilder: tagBuilder,
     				matchedText: matchedText,
@@ -3385,9 +3386,14 @@ Autolinker.matcher.Phone = Autolinker.Util.extend( Autolinker.matcher.Matcher, {
 		}
 
 		return matches;
+	},
+
+	testMatch: function(text) {
+		return /\D/.test(text);
 	}
 
 } );
+
 /*global Autolinker */
 /**
  * @class Autolinker.matcher.Mention
